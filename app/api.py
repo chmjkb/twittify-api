@@ -33,7 +33,7 @@ def get_programming_langs():
         params=query
     )
     if not response.ok:
-        return {"error_message": f"Twitter API returned: {response.reason}"}, response.status_code
+        return handle_error_response(response)
     response_json = response.json()
     tweets = [Tweet.from_json(tweet_json) for tweet_json in response_json.get("data")]
     if not tweets:
