@@ -13,8 +13,8 @@ def predict_sentiment(tweets: list[Tweet]) -> str:
     avg_sentiment = total_sentiment / len(tweets)
 
     if avg_sentiment > 0:
-        return "Generally positive"  # TODO -> Convert to enum
+        return "POSITIVE"
     elif avg_sentiment < 0:
-        return "Generally negative"
+        return "NEGATIVE"
     else:
-        return "Generally neutral"
+        return "NEUTRAL"

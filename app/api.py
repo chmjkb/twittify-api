@@ -2,6 +2,7 @@ from flask import Flask, request
 from session import Session
 from utils import ml, functions
 from error_handler import handle_error_response
+from models.tweet import Tweet
 
 
 app = Flask(__name__)
@@ -34,9 +35,9 @@ def get_programming_langs():
     if not response.ok:
         return {"error_message": f"Twitter API returned: {response.reason}"}, response.status_code
     response_json = response.json()
-    tweets = [tweet.get("text") for tweet in response_json.get("data")]
+    tweets = [Tweet.from_json(tweet_json) for tweet_json in response_json.get("data")]
     if not tweets:
-        return {"error_message": f"No tweets found, invalid programming langs?"}, 100
+        return {"error_message": f"No content, invalid programming langs?"}, 204
     programming_langs_histogram = functions.count_programming_languages(tweets)
     return programming_langs_histogram, 200
 

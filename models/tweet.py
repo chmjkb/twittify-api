@@ -41,4 +41,4 @@ class Tweet:
             "likes_count": self._likes,
             "reposts_count": self._reposts_count
         }
-        return json
+        return data
