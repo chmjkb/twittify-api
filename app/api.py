@@ -1,8 +1,8 @@
 from flask import Flask, request
 from session import Session
 from utils import ml, functions
-from error_handler import handle_error_response
 from models.tweet import Tweet
+import utils.functions
 
 
 app = Flask(__name__)
@@ -20,8 +20,8 @@ def get_sentiment(username: str):
         params={"screen_name": username, "from": from_date}  # TODO -> from parameter is not going to work
     )
     if not response.ok:
-        return handle_error_response(response)
-    sentiment = ml.predict_sentiment(tweets=[tweet.text for tweet in response.json()])
+        return functions.handle_error_response(response)
+    sentiment = ml.predict_sentiment(tweets=[Tweet.from_json(tweet_data).text for tweet_data in response.json()])
     return {"sentiment": sentiment}, 200
 
 
@@ -33,7 +33,7 @@ def get_programming_langs():
         params=query
     )
     if not response.ok:
-        return handle_error_response(response)
+        return functions.handle_error_response(response)
     response_json = response.json()
     tweets = [Tweet.from_json(tweet_json) for tweet_json in response_json.get("data")]
     if not tweets:
@@ -42,9 +42,9 @@ def get_programming_langs():
     return programming_langs_histogram, 200
 
 
-# @app.route('/tweets/most_popular/<user_id>', methods=['GET'])
-# def get_user_most_popular_tweets(user_id: str):
-#     pass
+@app.route('/tweets/most_popular/<user_id>', methods=['GET'])
+def get_user_most_popular_tweets(user_id: str):
+    pass
 
 
 # TODO -> Post a random, AI generated tweet?
