@@ -2,8 +2,8 @@ from typing import Optional
 from collections import defaultdict
 from models.tweet import Tweet
 from re import findall
-from enums import ErrorType
 import requests
+from utils.enums import ErrorType
 
 
 def count_programming_languages(tweets: list[Tweet], programming_languages: Optional[list[str]] = None) -> dict:
@@ -26,5 +26,20 @@ def count_programming_languages(tweets: list[Tweet], programming_languages: Opti
     return dict(language_counts)
 
 
-def handle_error_response(response: requests.Response):
-    return ErrorType.get_error_from_code(response.status_code)
+def sort_by_likes(tweets: list[Tweet]):
+    """
+    A simple function that takes in a list of tweets, and returns
+    :param tweets: A list of tweet objects
+    :return: List of Tweet objects, sorted by popularity
+    """
+    sorted_tweets = sorted(tweets, key=lambda tweet: tweet.likes, reverse=True)
+    return sorted_tweets
+
+
+def handle_error_response(response: requests.Response) -> dict:
+    message = ErrorType.get_error_from_code(response.status_code)
+    server_response = {
+        "status_code": response.status_code,
+        "error_message": message
+    }
+    return server_response

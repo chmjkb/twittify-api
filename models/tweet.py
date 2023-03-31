@@ -12,11 +12,11 @@ class Tweet:
     @classmethod
     def from_json(cls, json_obj: dict):
         tweet = cls(
-            user=json_obj.get("user"),
-            text=json_obj.get("text"),
-            created_at=json_obj.get("created_at"),
-            likes=json_obj.get("likes"),
-            reposts_count=len(json_obj.get("reposts"))
+            user=json_obj.get("user", {}),
+            text=json_obj.get("text", {}),
+            created_at=json_obj.get("created_at", {}),
+            likes=json_obj.get("public_metrics", {}).get("likes_count", "Not specified"),
+            reposts_count=len(json_obj.get("public_metrics", {}).get("reposts_count", "Not specified"))
         )
         return tweet
 
@@ -42,3 +42,7 @@ class Tweet:
             "reposts_count": self._reposts_count
         }
         return data
+
+    def __str__(self) -> str:
+        return str(self.json)
+

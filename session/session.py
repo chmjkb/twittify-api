@@ -1,6 +1,6 @@
 from typing import Optional
-from config.config import Config
 import requests
+from config.conf import Config
 
 
 class Session:

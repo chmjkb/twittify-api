@@ -2,7 +2,7 @@
 FROM python:3.10-slim
 
 # dir containing our api
-WORKDIR /app
+WORKDIR /twitter-api
 
 # copy and install dependencies
 COPY requirements.txt requirements.txt
@@ -12,4 +12,3 @@ RUN pip install -r requirements.txt
 COPY . .
 
 CMD ["python3", "-m", "flask", "run", "--host=0.0.0.0"]
-
